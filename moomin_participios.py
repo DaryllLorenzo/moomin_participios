@@ -81,8 +81,11 @@ def mostrar_reloj():
 mostrar_reloj()
 
 # --- Título principal ---
-st.title("🌸 Moomin y los Participios")
-st.markdown("Practica participios con un toque de calma y magia Moomin 💫")
+st.title("🌸 Moomin estudia")
+st.markdown("Practica con un toque de calma y magia Moomin 💫")
+
+modo = st.radio("¿Qué quieres practicar?", ["🇪🇸 Participios en español", "🇷🇺 Verbos en ruso"], horizontal=True)
+st.markdown("---")
 
 # --- Saludo según hora ---
 if hora_actual < 12:
@@ -126,8 +129,8 @@ def mostrar_gif(nombre_archivo: str, ancho: int = 250):
 # Mostrar un GIF inicial (aleatorio)
 mostrar_gif(random.choice(gif_moods["default"]))
 
-# --- Lista de ejercicios ---
-ejercicios = [
+# --- Lista de ejercicios de participios ---
+ejercicios_es = [
     # --- Nivel básico ---
     {"frase": "No he ___ que me llamaste anoche.", "opciones": ["oído", "oido", "escuchado"], "respuesta": "oído", "pista": "Participio de 'oír'."},
     {"frase": "Hemos ___ muchas veces sobre ese tema.", "opciones": ["discutido", "discudido", "discuto"], "respuesta": "discutido", "pista": "Verbo que empieza por 'discu-'."},
@@ -194,16 +197,72 @@ ejercicios = [
     {"frase": "Hemos ___ todas las tareas correctamente.", "opciones": ["realizado", "realizando", "realizar"], "respuesta": "realizado", "pista": "Participio regular de 'realizar'."},
 ]
 
+# --- Lista de ejercicios de verbos rusos (conjugación presente, A2) ---
+ejercicios_ru = [
+    # читать (leer) - 1ª conjugación
+    {"frase": "Я ___ книгу каждый день. (leer)", "opciones": ["читаю", "читаешь", "читает"], "respuesta": "читаю", "pista": "читать → я читаю (1ª persona singular)"},
+    {"frase": "Ты ___ газету утром? (leer)", "opciones": ["читаешь", "читаю", "читает"], "respuesta": "читаешь", "pista": "читать → ты читаешь (2ª persona singular)"},
+    {"frase": "Он ___ журнал в библиотеке. (leer)", "opciones": ["читает", "читаю", "читаем"], "respuesta": "читает", "pista": "читать → он/она читает (3ª persona singular)"},
+    {"frase": "Мы ___ вместе каждый вечер. (leer)", "opciones": ["читаем", "читают", "читаете"], "respuesta": "читаем", "pista": "читать → мы читаем (1ª persona plural)"},
+    {"frase": "Вы ___ по-русски? (leer)", "opciones": ["читаете", "читаем", "читают"], "respuesta": "читаете", "pista": "читать → вы читаете (2ª persona plural / formal)"},
+    {"frase": "Они ___ книги на русском. (leer)", "opciones": ["читают", "читаете", "читает"], "respuesta": "читают", "pista": "читать → они читают (3ª persona plural)"},
+    # говорить (hablar) - 2ª conjugación
+    {"frase": "Я ___ по-испански. (hablar)", "opciones": ["говорю", "говоришь", "говорит"], "respuesta": "говорю", "pista": "говорить → я говорю (1ª persona singular)"},
+    {"frase": "Ты ___ слишком быстро! (hablar)", "opciones": ["говоришь", "говорю", "говорит"], "respuesta": "говоришь", "pista": "говорить → ты говоришь (2ª persona singular)"},
+    {"frase": "Она ___ по телефону. (hablar)", "opciones": ["говорит", "говорю", "говорим"], "respuesta": "говорит", "pista": "говорить → он/она говорит (3ª persona singular)"},
+    {"frase": "Мы ___ о погоде. (hablar)", "opciones": ["говорим", "говорят", "говорите"], "respuesta": "говорим", "pista": "говорить → мы говорим (1ª persona plural)"},
+    {"frase": "Вы ___ по-английски? (hablar)", "opciones": ["говорите", "говорим", "говорят"], "respuesta": "говорите", "pista": "говорить → вы говорите (2ª persona plural / formal)"},
+    {"frase": "Они ___ очень громко. (hablar)", "opciones": ["говорят", "говорите", "говорит"], "respuesta": "говорят", "pista": "говорить → они говорят (3ª persona plural)"},
+    # жить (vivir) - 1ª conjugación irregular
+    {"frase": "Я ___ в Москве. (vivir)", "opciones": ["живу", "живёшь", "живёт"], "respuesta": "живу", "pista": "жить → я живу (1ª persona singular)"},
+    {"frase": "Ты ___ далеко от центра? (vivir)", "opciones": ["живёшь", "живу", "живёт"], "respuesta": "живёшь", "pista": "жить → ты живёшь (2ª persona singular)"},
+    {"frase": "Он ___ в маленьком городе. (vivir)", "opciones": ["живёт", "живу", "живём"], "respuesta": "живёт", "pista": "жить → он/она живёт (3ª persona singular)"},
+    {"frase": "Мы ___ вместе уже три года. (vivir)", "opciones": ["живём", "живут", "живёте"], "respuesta": "живём", "pista": "жить → мы живём (1ª persona plural)"},
+    {"frase": "Вы ___ в этом доме? (vivir)", "opciones": ["живёте", "живём", "живут"], "respuesta": "живёте", "pista": "жить → вы живёте (2ª persona plural / formal)"},
+    {"frase": "Они ___ в большом городе. (vivir)", "opciones": ["живут", "живёте", "живёт"], "respuesta": "живут", "pista": "жить → они живут (3ª persona plural)"},
+    # знать (saber/conocer) - 1ª conjugación
+    {"frase": "Я не ___ этого слова. (saber)", "opciones": ["знаю", "знаешь", "знает"], "respuesta": "знаю", "pista": "знать → я знаю (1ª persona singular)"},
+    {"frase": "Ты ___ где она живёт? (saber)", "opciones": ["знаешь", "знаю", "знает"], "respuesta": "знаешь", "pista": "знать → ты знаешь (2ª persona singular)"},
+    {"frase": "Она ___ правильный ответ. (saber)", "opciones": ["знает", "знаю", "знаем"], "respuesta": "знает", "pista": "знать → он/она знает (3ª persona singular)"},
+    {"frase": "Мы ___ этого человека. (conocer)", "opciones": ["знаем", "знают", "знаете"], "respuesta": "знаем", "pista": "знать → мы знаем (1ª persona plural)"},
+    {"frase": "Вы ___ этот район? (conocer)", "opciones": ["знаете", "знаем", "знают"], "respuesta": "знаете", "pista": "знать → вы знаете (2ª persona plural / formal)"},
+    {"frase": "Они ___ друг друга давно. (conocer)", "opciones": ["знают", "знаете", "знает"], "respuesta": "знают", "pista": "знать → они знают (3ª persona plural)"},
+    # работать (trabajar) - 1ª conjugación
+    {"frase": "Я ___ в офисе. (trabajar)", "opciones": ["работаю", "работаешь", "работает"], "respuesta": "работаю", "pista": "работать → я работаю (1ª persona singular)"},
+    {"frase": "Ты ___ сегодня? (trabajar)", "opciones": ["работаешь", "работаю", "работает"], "respuesta": "работаешь", "pista": "работать → ты работаешь (2ª persona singular)"},
+    {"frase": "Он ___ врачом. (trabajar)", "opciones": ["работает", "работаю", "работаем"], "respuesta": "работает", "pista": "работать → он/она работает (3ª persona singular)"},
+    {"frase": "Мы ___ каждый день. (trabajar)", "opciones": ["работаем", "работают", "работаете"], "respuesta": "работаем", "pista": "работать → мы работаем (1ª persona plural)"},
+    {"frase": "Вы ___ в этой компании? (trabajar)", "opciones": ["работаете", "работаем", "работают"], "respuesta": "работаете", "pista": "работать → вы работаете (2ª persona plural / formal)"},
+    {"frase": "Они ___ допоздна. (trabajar)", "opciones": ["работают", "работаете", "работает"], "respuesta": "работают", "pista": "работать → они работают (3ª persona plural)"},
+    # любить (amar/gustar) - 2ª conjugación con alternancia
+    {"frase": "Я ___ читать книги. (amar/gustar)", "opciones": ["люблю", "любишь", "любит"], "respuesta": "люблю", "pista": "любить → я люблю (atención: б → бл en 1ª persona)"},
+    {"frase": "Ты ___ музыку? (amar/gustar)", "opciones": ["любишь", "люблю", "любит"], "respuesta": "любишь", "pista": "любить → ты любишь (2ª persona singular)"},
+    {"frase": "Она ___ кошек. (amar/gustar)", "opciones": ["любит", "люблю", "любим"], "respuesta": "любит", "pista": "любить → он/она любит (3ª persona singular)"},
+    {"frase": "Мы ___ путешествовать. (amar/gustar)", "opciones": ["любим", "любят", "любите"], "respuesta": "любим", "pista": "любить → мы любим (1ª persona plural)"},
+    {"frase": "Вы ___ русскую кухню? (amar/gustar)", "opciones": ["любите", "любим", "любят"], "respuesta": "любите", "pista": "любить → вы любите (2ª persona plural / formal)"},
+    {"frase": "Они ___ спорт. (amar/gustar)", "opciones": ["любят", "любите", "любит"], "respuesta": "любят", "pista": "любить → они любят (3ª persona plural)"},
+    # идти (ir a pie, ahora mismo) - irregular
+    {"frase": "Я ___ в магазин. (ir a pie)", "opciones": ["иду", "идёшь", "идёт"], "respuesta": "иду", "pista": "идти → я иду (1ª persona singular, verbo irregular)"},
+    {"frase": "Ты ___ домой? (ir a pie)", "opciones": ["идёшь", "иду", "идёт"], "respuesta": "идёшь", "pista": "идти → ты идёшь (2ª persona singular)"},
+    {"frase": "Он ___ на работу пешком. (ir a pie)", "opciones": ["идёт", "иду", "идём"], "respuesta": "идёт", "pista": "идти → он/она идёт (3ª persona singular)"},
+    {"frase": "Мы ___ в кино сегодня. (ir a pie)", "opciones": ["идём", "идут", "идёте"], "respuesta": "идём", "pista": "идти → мы идём (1ª persona plural)"},
+    {"frase": "Вы ___ на концерт? (ir a pie)", "opciones": ["идёте", "идём", "идут"], "respuesta": "идёте", "pista": "идти → вы идёте (2ª persona plural / formal)"},
+    {"frase": "Они ___ в парк. (ir a pie)", "opciones": ["идут", "идёте", "идёт"], "respuesta": "идут", "pista": "идти → они идут (3ª persona plural)"},
+]
+
 
 # --- Estado inicial ---
-if "indice_actual" not in st.session_state:
+ejercicios = ejercicios_ru if modo == "🇷🇺 Verbos en ruso" else ejercicios_es
+
+if "indice_actual" not in st.session_state or st.session_state.get("modo_anterior") != modo:
     st.session_state.indice_actual = random.randint(0, len(ejercicios) - 1)
     st.session_state.resultado = None
     st.session_state.mostrar_pista = False
+    st.session_state.modo_anterior = modo
 
 ejercicio = ejercicios[st.session_state.indice_actual]
 
-st.write("### ✏️ Completa la frase:")
+st.write("### ✏️ Completa la frase:" if modo == "🇪🇸 Participios en español" else "### ✏️ Elige la forma correcta:")
 st.write(f"**{ejercicio['frase']}**")
 
 # --- Mostrar opciones ---
@@ -241,7 +300,7 @@ if st.button("🔁 Nueva frase"):
 st.markdown("---")
 if st.checkbox("🪶 Ver modo repaso (todas las frases)"):
     mostrar_gif("moomin_teacher.gif", ancho=180)
-    st.write("### 📘 Cuaderno de Participios")
+    st.write("### 📘 Cuaderno de Participios" if modo == "🇪🇸 Participios en español" else "### 📘 Cuaderno de Verbos Rusos")
 
     filtro = st.text_input("🔍 Buscar palabra o verbo:")
     for e in ejercicios:
